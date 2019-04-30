@@ -320,7 +320,6 @@ func (enc *Encoder) encodeCustomSchemaTypes() {
 }
 
 func (enc *Encoder) encodeProto(buf []byte) error {
-	// TODO: Reuse
 	iter := enc.unmarshalIter
 	iter.reset(enc.schema, buf)
 
