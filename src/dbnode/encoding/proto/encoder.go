@@ -54,8 +54,6 @@ var (
 )
 
 // Encoder compresses arbitrary ProtoBuf streams given a schema.
-// TODO(rartoul): Add support for changing the schema (and updating the ordering
-// of the custom encoded fields) on demand: https://github.com/m3db/m3/issues/1471
 type Encoder struct {
 	opts encoding.Options
 
@@ -436,8 +434,6 @@ func (enc *Encoder) Reset(
 }
 
 // SetSchema sets the encoders schema.
-// TODO(rartoul): Add support for changing the schema (and updating the ordering
-// of the custom encoded fields) on demand: https://github.com/m3db/m3/issues/1471
 func (enc *Encoder) SetSchema(schema *desc.MessageDescriptor) {
 	enc.resetSchema(schema)
 }
