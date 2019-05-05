@@ -73,7 +73,7 @@ type Encoder struct {
 	fieldsChangedToDefault []int32
 	marshalBuf             []byte
 
-	sortedUnmarshalIter *sortedUnmarshalIter
+	sortedUnmarshalIter sortedUnmarshalIterator
 
 	hasEncodedSchema bool
 	closed           bool
@@ -130,6 +130,11 @@ func (enc *Encoder) Encode(dp ts.Datapoint, timeUnit xtime.Unit, protoBytes ts.A
 	if enc.sortedUnmarshalIter == nil {
 		// Lazy init.
 		enc.sortedUnmarshalIter = newUnmarshalIter()
+	}
+	// Reset the sortedUnmarshalIterator as early as possible so that the marshaled
+	if err := enc.sortedUnmarshalIter.reset(enc.schema, protoBytes); err != nil {
+		return fmt.Errorf(
+			"%s error unmarshaling message: %v", encErrPrefix, err)
 	}
 
 	// Capture a rollback token that allows the OStream to be rolled back to the state it was in before any
@@ -326,10 +331,8 @@ func (enc *Encoder) encodeCustomSchemaTypes() {
 }
 
 func (enc *Encoder) encodeProto(buf []byte) error {
-	sortedIter := enc.sortedUnmarshalIter
-	sortedIter.reset(enc.schema, buf)
-
 	var (
+		sortedIter = enc.sortedUnmarshalIter
 		// If there is no initial value (due to next returning false) then
 		// lastMarshaledValue should be considered unusable.
 		lastMarshaledValueConsumed = !sortedIter.next()
