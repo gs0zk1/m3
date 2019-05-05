@@ -73,7 +73,7 @@ type Encoder struct {
 	fieldsChangedToDefault []int32
 	marshalBuf             []byte
 
-	unmarshaler topLevelScalarUnmarshaler
+	unmarshaler customFieldUnmarshaler
 
 	hasEncodedSchema bool
 	closed           bool
@@ -319,7 +319,7 @@ func (enc *Encoder) encodeCustomSchemaTypes() {
 
 func (enc *Encoder) encodeProto(buf []byte) error {
 	var (
-		sortedTopLevelScalarValues    = enc.unmarshaler.sortedTopLevelScalarValues()
+		sortedTopLevelScalarValues    = enc.unmarshaler.sortedCustomFieldValues()
 		sortedTopLevelScalarValuesIdx = 0
 		lastMarshaledValue            unmarshalValue
 	)
@@ -385,7 +385,7 @@ func (enc *Encoder) encodeProto(buf []byte) error {
 		sortedTopLevelScalarValuesIdx++
 	}
 
-	otherValues := enc.unmarshaler.otherValues()
+	otherValues := enc.unmarshaler.nonCustomFieldValues()
 	if err := enc.encodeProtoValues(otherValues); err != nil {
 		return err
 	}
