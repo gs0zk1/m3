@@ -49,7 +49,7 @@ type DatabaseSeries interface {
 	// Tags return the tags of the series.
 	Tags() ident.Tags
 
-	// Tick executes async updates
+	// Tick executes async updates.
 	Tick(blockStates map[xtime.UnixNano]BlockState) (TickResult, error)
 
 	// Write writes a new value.
@@ -74,6 +74,15 @@ type DatabaseSeries interface {
 		starts []time.Time,
 	) ([]block.FetchBlockResult, error)
 
+	// FetchBlocksForColdFlush fetches blocks for a cold flush. This function
+	// informs the series and the buffer that a cold flush for the specified
+	// block start is occurring so that it knows to update bucket versions.
+	FetchBlocksForColdFlush(
+		ctx context.Context,
+		start time.Time,
+		version int,
+	) ([]xio.BlockReader, error)
+
 	// FetchBlocksMetadata returns the blocks metadata.
 	FetchBlocksMetadata(
 		ctx context.Context,
@@ -93,21 +102,23 @@ type DatabaseSeries interface {
 	// Bootstrap merges the raw series bootstrapped along with any buffered data.
 	Bootstrap(blocks block.DatabaseSeriesBlocks) (BootstrapResult, error)
 
-	// Flush flushes the data blocks of this series for a given start time
-	Flush(
+	// WarmFlush flushes the WarmWrites of this series for a given start time.
+	WarmFlush(
 		ctx context.Context,
 		blockStart time.Time,
 		persistFn persist.DataFn,
-		version int,
 	) (FlushOutcome, error)
 
 	// Snapshot snapshots the buffer buckets of this series for any data that has
-	// not been rotated into a block yet
+	// not been rotated into a block yet.
 	Snapshot(
 		ctx context.Context,
 		blockStart time.Time,
 		persistFn persist.DataFn,
 	) error
+
+	// NeedsColdFlushBlockStarts returns the block starts that need cold flushes.
+	NeedsColdFlushBlockStarts() OptimizedTimes
 
 	// Close will close the series and if pooled returned to the pool.
 	Close()
@@ -155,10 +166,10 @@ type QueryableBlockRetriever interface {
 	BlockStatesSnapshot() map[xtime.UnixNano]BlockState
 }
 
-// BlockState contains the state of a block
+// BlockState contains the state of a block.
 type BlockState struct {
-	Retrievable bool
-	Version     int
+	WarmRetrievable bool
+	ColdVersion     int
 }
 
 // TickStatus is the status of a series for a given tick.
@@ -199,7 +210,7 @@ type DatabaseSeriesPool interface {
 }
 
 // FlushOutcome is an enum that provides more context about the outcome
-// of series.Flush() to the caller.
+// of series.WarmFlush() to the caller.
 type FlushOutcome int
 
 const (

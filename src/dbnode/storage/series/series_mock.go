@@ -104,6 +104,21 @@ func (mr *MockDatabaseSeriesMockRecorder) FetchBlocks(arg0, arg1 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchBlocks", reflect.TypeOf((*MockDatabaseSeries)(nil).FetchBlocks), arg0, arg1)
 }
 
+// FetchBlocksForColdFlush mocks base method
+func (m *MockDatabaseSeries) FetchBlocksForColdFlush(arg0 context.Context, arg1 time.Time, arg2 int) ([]xio.BlockReader, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FetchBlocksForColdFlush", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]xio.BlockReader)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FetchBlocksForColdFlush indicates an expected call of FetchBlocksForColdFlush
+func (mr *MockDatabaseSeriesMockRecorder) FetchBlocksForColdFlush(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchBlocksForColdFlush", reflect.TypeOf((*MockDatabaseSeries)(nil).FetchBlocksForColdFlush), arg0, arg1, arg2)
+}
+
 // FetchBlocksMetadata mocks base method
 func (m *MockDatabaseSeries) FetchBlocksMetadata(arg0 context.Context, arg1, arg2 time.Time, arg3 FetchBlocksMetadataOptions) (block.FetchBlocksMetadataResult, error) {
 	m.ctrl.T.Helper()
@@ -117,21 +132,6 @@ func (m *MockDatabaseSeries) FetchBlocksMetadata(arg0 context.Context, arg1, arg
 func (mr *MockDatabaseSeriesMockRecorder) FetchBlocksMetadata(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FetchBlocksMetadata", reflect.TypeOf((*MockDatabaseSeries)(nil).FetchBlocksMetadata), arg0, arg1, arg2, arg3)
-}
-
-// Flush mocks base method
-func (m *MockDatabaseSeries) Flush(arg0 context.Context, arg1 time.Time, arg2 persist.DataFn, arg3 int) (FlushOutcome, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Flush", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(FlushOutcome)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Flush indicates an expected call of Flush
-func (mr *MockDatabaseSeriesMockRecorder) Flush(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Flush", reflect.TypeOf((*MockDatabaseSeries)(nil).Flush), arg0, arg1, arg2, arg3)
 }
 
 // ID mocks base method
@@ -174,6 +174,20 @@ func (m *MockDatabaseSeries) IsEmpty() bool {
 func (mr *MockDatabaseSeriesMockRecorder) IsEmpty() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsEmpty", reflect.TypeOf((*MockDatabaseSeries)(nil).IsEmpty))
+}
+
+// NeedsColdFlushBlockStarts mocks base method
+func (m *MockDatabaseSeries) NeedsColdFlushBlockStarts() OptimizedTimes {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NeedsColdFlushBlockStarts")
+	ret0, _ := ret[0].(OptimizedTimes)
+	return ret0
+}
+
+// NeedsColdFlushBlockStarts indicates an expected call of NeedsColdFlushBlockStarts
+func (mr *MockDatabaseSeriesMockRecorder) NeedsColdFlushBlockStarts() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NeedsColdFlushBlockStarts", reflect.TypeOf((*MockDatabaseSeries)(nil).NeedsColdFlushBlockStarts))
 }
 
 // NumActiveBlocks mocks base method
@@ -282,6 +296,21 @@ func (m *MockDatabaseSeries) Tick(arg0 map[time0.UnixNano]BlockState) (TickResul
 func (mr *MockDatabaseSeriesMockRecorder) Tick(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Tick", reflect.TypeOf((*MockDatabaseSeries)(nil).Tick), arg0)
+}
+
+// WarmFlush mocks base method
+func (m *MockDatabaseSeries) WarmFlush(arg0 context.Context, arg1 time.Time, arg2 persist.DataFn) (FlushOutcome, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "WarmFlush", arg0, arg1, arg2)
+	ret0, _ := ret[0].(FlushOutcome)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// WarmFlush indicates an expected call of WarmFlush
+func (mr *MockDatabaseSeriesMockRecorder) WarmFlush(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WarmFlush", reflect.TypeOf((*MockDatabaseSeries)(nil).WarmFlush), arg0, arg1, arg2)
 }
 
 // Write mocks base method

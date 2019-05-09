@@ -1255,18 +1255,18 @@ func (mr *MockdatabaseNamespaceMockRecorder) Bootstrap(start, process interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bootstrap", reflect.TypeOf((*MockdatabaseNamespace)(nil).Bootstrap), start, process)
 }
 
-// Flush mocks base method
-func (m *MockdatabaseNamespace) Flush(blockStart time.Time, ShardBootstrapStates ShardBootstrapStates, flush persist.FlushPreparer) error {
+// WarmFlush mocks base method
+func (m *MockdatabaseNamespace) WarmFlush(blockStart time.Time, ShardBootstrapStates ShardBootstrapStates, flush persist.FlushPreparer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Flush", blockStart, ShardBootstrapStates, flush)
+	ret := m.ctrl.Call(m, "WarmFlush", blockStart, ShardBootstrapStates, flush)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Flush indicates an expected call of Flush
-func (mr *MockdatabaseNamespaceMockRecorder) Flush(blockStart, ShardBootstrapStates, flush interface{}) *gomock.Call {
+// WarmFlush indicates an expected call of WarmFlush
+func (mr *MockdatabaseNamespaceMockRecorder) WarmFlush(blockStart, ShardBootstrapStates, flush interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Flush", reflect.TypeOf((*MockdatabaseNamespace)(nil).Flush), blockStart, ShardBootstrapStates, flush)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WarmFlush", reflect.TypeOf((*MockdatabaseNamespace)(nil).WarmFlush), blockStart, ShardBootstrapStates, flush)
 }
 
 // FlushIndex mocks base method
@@ -1281,6 +1281,20 @@ func (m *MockdatabaseNamespace) FlushIndex(flush persist.IndexFlush) error {
 func (mr *MockdatabaseNamespaceMockRecorder) FlushIndex(flush interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FlushIndex", reflect.TypeOf((*MockdatabaseNamespace)(nil).FlushIndex), flush)
+}
+
+// ColdFlush mocks base method
+func (m *MockdatabaseNamespace) ColdFlush(flush persist.FlushPreparer) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ColdFlush", flush)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ColdFlush indicates an expected call of ColdFlush
+func (mr *MockdatabaseNamespaceMockRecorder) ColdFlush(flush interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ColdFlush", reflect.TypeOf((*MockdatabaseNamespace)(nil).ColdFlush), flush)
 }
 
 // Snapshot mocks base method
@@ -1674,18 +1688,32 @@ func (mr *MockdatabaseShardMockRecorder) Bootstrap(bootstrappedSeries interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bootstrap", reflect.TypeOf((*MockdatabaseShard)(nil).Bootstrap), bootstrappedSeries)
 }
 
-// Flush mocks base method
-func (m *MockdatabaseShard) Flush(blockStart time.Time, flush persist.FlushPreparer) error {
+// WarmFlush mocks base method
+func (m *MockdatabaseShard) WarmFlush(blockStart time.Time, flush persist.FlushPreparer) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Flush", blockStart, flush)
+	ret := m.ctrl.Call(m, "WarmFlush", blockStart, flush)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Flush indicates an expected call of Flush
-func (mr *MockdatabaseShardMockRecorder) Flush(blockStart, flush interface{}) *gomock.Call {
+// WarmFlush indicates an expected call of WarmFlush
+func (mr *MockdatabaseShardMockRecorder) WarmFlush(blockStart, flush interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Flush", reflect.TypeOf((*MockdatabaseShard)(nil).Flush), blockStart, flush)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WarmFlush", reflect.TypeOf((*MockdatabaseShard)(nil).WarmFlush), blockStart, flush)
+}
+
+// ColdFlush mocks base method
+func (m *MockdatabaseShard) ColdFlush(flush persist.FlushPreparer, resources coldFlushReuseableResources) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ColdFlush", flush, resources)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ColdFlush indicates an expected call of ColdFlush
+func (mr *MockdatabaseShardMockRecorder) ColdFlush(flush, resources interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ColdFlush", reflect.TypeOf((*MockdatabaseShard)(nil).ColdFlush), flush, resources)
 }
 
 // Snapshot mocks base method
@@ -1714,21 +1742,6 @@ func (m *MockdatabaseShard) FlushState(blockStart time.Time) fileOpState {
 func (mr *MockdatabaseShardMockRecorder) FlushState(blockStart interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FlushState", reflect.TypeOf((*MockdatabaseShard)(nil).FlushState), blockStart)
-}
-
-// SnapshotState mocks base method
-func (m *MockdatabaseShard) SnapshotState() (bool, time.Time) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SnapshotState")
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(time.Time)
-	return ret0, ret1
-}
-
-// SnapshotState indicates an expected call of SnapshotState
-func (mr *MockdatabaseShardMockRecorder) SnapshotState() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SnapshotState", reflect.TypeOf((*MockdatabaseShard)(nil).SnapshotState))
 }
 
 // CleanupExpiredFileSets mocks base method
